@@ -2,7 +2,7 @@ esphome:
   name: esp8266-lavalamp-$device_id
   friendly_name: Lavalamp $friendly_name
   includes:
-    - "/config/esphome/projects/code/lavalamp.h"
+    - "lavalamp.h"
   on_boot:
     priority: -100.0
     then:
@@ -79,7 +79,7 @@ light:
   - platform: neopixelbus
     type: $color_order
     variant: $led_chip
-    pin: 3
+    pin: 1
     num_leds: 256
     name: "Lava"
     id: lavalamp
