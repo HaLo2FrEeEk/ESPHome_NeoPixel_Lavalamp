@@ -1,0 +1,114 @@
+esphome:
+  name: esp8266-lavalamp-$device_id
+  friendly_name: Lavalamp $friendly_name
+  includes:
+    - "/config/esphome/projects/code/lavalamp.h"
+  on_boot:
+    priority: -100.0
+    then:
+      - light.turn_on:
+          id: lavalamp
+          effect: "Lavalamp"
+
+
+esp8266:
+  board: esp01_1m
+  restore_from_flash: True
+
+
+logger:
+  baud_rate: 0
+
+api:
+  reboot_timeout: 0s
+
+ota:
+  platform: esphome
+
+wifi:
+  # use_address: $temp_address
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap: 
+    password: "lavalamp"
+
+captive_portal:
+
+web_server:
+  log: false
+  version: 3
+
+
+number:
+  - platform: template
+    name: "Spawn Rate"
+    id: spawnrate
+    step: 0.01
+    min_value: 0.1
+    max_value: 1.0
+    initial_value: 0.8
+    mode: slider
+    restore_value: True
+    optimistic: True
+    entity_category: config
+  
+  - platform: template
+    name: "Initial pixel value"
+    id: init_value
+    step: 1
+    min_value: 0
+    max_value: 511
+    mode: slider
+    restore_value: True
+    optimistic: True
+    entity_category: config
+  
+  - platform: template
+    name: "Pixel Count"
+    id: pixel_count
+    step: 1
+    min_value: 1
+    max_value: 256
+    initial_value: 30
+    mode: box
+    restore_value: True
+    optimistic: True
+    entity_category: config
+
+light:
+  - platform: neopixelbus
+    type: $color_order
+    variant: $led_chip
+    pin: 3
+    num_leds: 256
+    name: "Lava"
+    id: lavalamp
+    restore_mode: RESTORE_DEFAULT_ON
+    on_turn_on:
+      then:
+        - light.turn_on:
+            id: lavalamp
+            effect: Lavalamp
+    effects:
+      - addressable_lambda:
+          name: "Lavalamp"
+          update_interval: ${update_interval}ms
+          lambda: |-
+            if(initial_run) {
+              for(int i = 0; i < 256; i++) {
+                lava[i] = id(init_value).state;
+              }
+              fps = id(lavalamp).get_default_transition_length() / $update_interval;
+              num_pixels = id(pixel_count).state;
+            }
+            update_lava(it, current_color);
+
+  - platform: neopixelbus
+    type: $color_order
+    variant: $led_chip
+    pin: 0
+    num_leds: 1
+    name: "Base"
+    id: base
+    restore_mode: RESTORE_DEFAULT_OFF
+    entity_category: config
