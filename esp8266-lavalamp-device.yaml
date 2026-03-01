@@ -1,0 +1,16 @@
+substitutions:
+  #device_id: "[device id]"
+  friendly_name: "Computer Room TV"
+  color_order: "GRB" # GRB, BGR, RGBW, etc.
+  led_chip: "ws2812x" # ws1812x
+  update_interval: "10" # 20mspf = 50fps
+
+packages:
+  envmon: !include "esp8266-lavalamp.yaml"
+
+esphome:
+  name_add_mac_suffix: true
+
+light:
+  - id: !extend lavalamp
+    pin: 3 # whatever pin you're using. Default is 1
