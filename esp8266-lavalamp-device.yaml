@@ -6,7 +6,7 @@ substitutions:
   update_interval: "10" # 20mspf = 50fps
 
 packages:
-  lavalamp: !include "esp8266-lavalamp.yaml"
+  lavalamp: "github://HaLo2FrEeEk/ESPHome_NeoPixel_Lavalamp/esp8266-lavalamp.yaml"
 
 esphome:
   name_add_mac_suffix: true
