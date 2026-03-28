@@ -2,7 +2,7 @@ esphome:
   name: esp8266-lavalamp-$device_id
   friendly_name: Lavalamp $friendly_name
   includes:
-    - "lavalamp.h"
+    - "github://HaLo2FrEeEk/ESPHome_NeoPixel_Lavalamp/lavalamp.h"
   on_boot:
     priority: -100.0
     then:
