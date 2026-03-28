@@ -1,6 +1,6 @@
 substitutions:
   #device_id: "[device id]"
-  friendly_name: "Computer Room TV"
+  friendly_name: "ESP Lavalamp"
   color_order: "GRB" # GRB, BGR, RGBW, etc.
   led_chip: "ws2812x" # ws1812x
   update_interval: "10" # 20mspf = 50fps
